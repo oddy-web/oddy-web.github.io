@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Canvas tutorial</title>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+    <script type="text/javascript">
+        var width = 150;
+        var height = 150;
+
+        var xInterval = 20;
+        var yInterval = 20;
+
+        function init(){
+          window.requestAnimationFrame(draw);
+        }
+        
+        function draw() {
+            var ctx = document.getElementById('canvas').getContext('2d');
+            ctx.clearRect(0, 0, width, height);
+
+            var date = new Date();
+            var milli = ((date.getHours()*60 + date.getMinutes())*60 + date.getSeconds()) * 1000 + date.getMilliseconds();
+
+            xPeriod = 500;
+            yPeriod = 5000;
+
+            xOffset = xInterval * (xPeriod != 0 ? (milli % xPeriod) / xPeriod : 0);
+            yOffset = yInterval * (yPeriod != 0 ? (milli % yPeriod) / yPeriod : 0);
+
+            for(var i = 0; i < width / xInterval; i++){
+                ctx.beginPath();
+                ctx.moveTo(i * xInterval + xOffset, 0);
+                ctx.lineTo(i * xInterval + xOffset, height);
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            for(var i = 0; i < height / yInterval; i++){
+                ctx.beginPath();
+                ctx.moveTo(0, i * yInterval + yOffset);
+                ctx.lineTo(width, i * yInterval + yOffset);
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+
+        /*
+          ctx.globalCompositeOperation = 'destination-over';
+          ctx.clearRect(0,0,300,300); // effacer le canvas
+        
+          ctx.fillStyle = 'rgba(0,0,0,0.4)';
+          ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+          ctx.save();
+          ctx.translate(150,150);
+        
+          // Terre
+          var time = new Date();
+          ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
+          ctx.translate(105,0);
+          ctx.fillRect(0,-12,50,24); // Ombre
+          ctx.drawImage(earth,-12,-12);
+        
+          // Lune
+          ctx.save();
+          ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
+          ctx.translate(0,28.5);
+          ctx.drawImage(moon,-3.5,-3.5);
+          ctx.restore();
+        
+          ctx.restore();
+        
+          ctx.beginPath();
+          ctx.arc(150,150,105,0,Math.PI*2,false); // Orbite terrestre
+          ctx.stroke();
+        
+          ctx.drawImage(sun,0,0,300,300);*/
+        
+          window.requestAnimationFrame(draw);
+        }
+        
+        init();
+    </script>
+  </body>
+</html>
